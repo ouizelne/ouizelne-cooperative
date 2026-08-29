@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" style="scroll-behavior: smooth;"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعاونية ويزلن النسائية | Coopérative Féminine Ouizelne</title>
+<meta name="description" content="تعاونية ويزلن النسائية في جبال الأطلس — تجربة سياحية ثقافية أصيلة ومنتجات طبيعية من زيت الأركان">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&amp;family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --primary:#1B4332;
+  --primary-light:#2D6A4F;
+  --secondary:#D4A373;
+  --secondary-dark:#B8875A;
+  --accent:#BC4749;
+  --bg:#FAF6F1;
+  --bg-dark:#0A0A0A;
+  --bg-dark-2:#12100D;
+  --text:#2C1810;
+  --text-soft:#5C4A3D;
+  --cream:#FAF6F1;
+  --gold-line: rgba(212,163,115,.45);
+  --font-ar: 'Tajawal', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --radius: 18px;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  position:relative;
+  -webkit-font-smoothing:antialiased;
+}
+
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(212,163,115,.10), transparent 40%),
+    radial-gradient(circle at 85% 70%, rgba(27,67,50,.08), transparent 45%);
+  pointer-events:none;
+  z-index:0;
+}
+
+.wood-texture{
+  background-image: repeating-linear-gradient(90deg, rgba(44,24,16,.025) 0px, rgba(44,24,16,.025) 1px, transparent 1px, transparent 6px);
+}
+
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+ul{list-style:none;}
+section{position:relative; z-index:1;}
+
+/* language visibility */
+.t-en, .t-fr, .t-ar, .t-es{display:none;}
+body.lang-en .t-en, body.lang-fr .t-fr, body.lang-ar .t-ar, body.lang-es .t-es{display:revert;}
+body.lang-en .en-only, body.lang-fr .fr-only, body.lang-ar .ar-only, body.lang-es .es-only{display:revert;}
+body.lang-en, body.lang-fr, body.lang-es{font-family: var(--font-body);}
+body.lang-ar{font-family: var(--font-ar);}
+body.lang-en .display-font, body.lang-fr .display-font, body.lang-es .display-font{font-family: var(--font-display);}
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.6em;
+  font-size:.78rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--secondary-dark); font-weight:700; margin-bottom:1.1rem;
+}
+body.lang-en .eyebrow, body.lang-fr .eyebrow, body.lang-es .eyebrow{font-family:var(--font-body); font-weight:600;}
+.eyebrow::before{content:""; width:28px; height:1px; background:var(--secondary-dark);}
+
+.section-title{
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  font-weight:700;
+  line-height:1.15;
+  color:var(--primary);
+  margin-bottom:1.1rem;
+}
+body.lang-ar .section-title{font-family:var(--font-ar); font-weight:900;}
+
+
+.section-lede{
+  max-width:640px;
+  color:var(--text-soft);
+  font-size:1.08rem;
+  line-height:1.9;
+}
+
+.wrap{max-width:1280px; margin-inline:auto; padding-inline:clamp(20px,5vw,64px);}
+.section-pad{padding-block:clamp(70px,10vw,140px);}
+
+/* ============ CUSTOM CURSOR ============ */
+.cursor-dot{
+  position:fixed; top:0; left:0; width:8px; height:8px; border-radius:50%;
+  background:var(--accent); pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s var(--ease), height .25s var(--ease), background .25s;
+}
+.cursor-ring{
+  position:fixed; top:0; left:0; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--secondary); pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .3s var(--ease), height .3s var(--ease), border-color .3s, opacity .3s;
+}
+.cursor-ring.magnetic{width:64px; height:64px; border-color:var(--accent);}
+@media (hover:none), (max-width:860px){ .cursor-dot,.cursor-ring{display:none;} }
+
+/* ============ NAVBAR ============ */
+.nav{
+  position:fixed; top:0; inset-inline:0; z-index:500;
+  padding:16px clamp(20px,5vw,48px);
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(250,246,241,.55);
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border-bottom:1px solid rgba(212,163,115,.35);
+  transition:background .4s, border-color .4s, padding .3s;
+}
+.nav.dark-mode{
+  background:rgba(10,10,10,.55);
+  border-bottom-color:rgba(212,163,115,.25);
+}
+.nav.dark-mode{color:var(--cream);}
+.nav-brand{display:flex; align-items:center; gap:12px;}
+.nav-brand img{width:42px; height:42px; border-radius:50%; object-fit:cover; border:1.5px solid var(--secondary);}
+.nav-brand .name{font-family:var(--font-display); font-weight:700; font-size:1.05rem; color:var(--primary);}
+.nav.dark-mode .nav-brand .name{color:var(--secondary);}
+body.lang-ar .nav-brand .name{font-family:var(--font-ar); font-weight:900;}
+
+.nav-links{display:flex; gap:2.1rem; align-items:center;}
+.nav-links a{font-size:.92rem; font-weight:600; position:relative; padding-block:4px;}
+.nav-links a::after{
+  content:""; position:absolute; bottom:0; inset-inline:0; height:1.5px;
+  background:var(--accent); transform:scaleX(0); transform-origin:right;
+  transition:transform .35s var(--ease);
+}
+.nav-links a:hover::after{transform:scaleX(1);}
+
+.nav-tools{display:flex; align-items:center; gap:10px;}
+.pill-btn{
+  border:1px solid var(--secondary-dark); border-radius:999px; padding:8px 16px;
+  font-size:.8rem; font-weight:700; letter-spacing:.02em;
+  display:flex; align-items:center; gap:6px; transition:all .3s var(--ease);
+}
+.pill-btn:hover{background:var(--primary); color:#fff; border-color:var(--primary);}
+.nav.dark-mode .pill-btn{border-color:var(--secondary);}
+
+.lang-select-wrap{position:relative;}
+.lang-menu{
+  position:absolute; top:calc(100% + 8px); inset-inline-end:0; min-width:150px;
+  background:var(--bg); border:1px solid var(--gold-line); border-radius:12px;
+  box-shadow:0 20px 40px -15px rgba(44,24,16,.35); padding:6px; z-index:600;
+  opacity:0; pointer-events:none; transform:translateY(-8px);
+  transition:opacity .25s var(--ease), transform .25s var(--ease);
+}
+.lang-menu.open{opacity:1; pointer-events:auto; transform:translateY(0);}
+.lang-menu li{
+  padding:10px 14px; border-radius:8px; font-size:.86rem; font-weight:600;
+  color:var(--text); cursor:pointer; transition:background .2s;
+}
+.lang-menu li:hover, .lang-menu li.active{background:var(--secondary); color:var(--primary);}
+.nav.dark-mode .lang-menu{background:var(--bg-dark-2); border-color:rgba(212,163,115,.25);}
+.nav.dark-mode .lang-menu li{color:var(--cream);}
+
+.nav-burger{display:none; width:34px; height:34px; align-items:center; justify-content:center;}
+.nav-burger span, .nav-burger::before, .nav-burger::after{display:none;}
+.burger-icon{width:22px; height:14px; position:relative;}
+.burger-icon i{position:absolute; inset-inline:0; height:1.5px; background:currentColor; transition:.3s;}
+.burger-icon i:nth-child(1){top:0;}
+.burger-icon i:nth-child(2){top:6px;}
+.burger-icon i:nth-child(3){top:12px;}
+
+@media (max-width:900px){
+  .nav-links{position:fixed; top:72px; inset-inline:0; flex-direction:column; background:var(--bg); padding:28px 20px; gap:1.4rem; transform:translateY(-130%); transition:transform .4s var(--ease); border-bottom:1px solid var(--gold-line);}
+  .nav-links.open{transform:translateY(0);}
+  .nav-burger{display:flex;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  height:100svh; position:relative; overflow:hidden;
+  display:flex; align-items:flex-end;
+  color:#fff;
+}
+.hero-slide{position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity 1.8s ease;}
+.hero-slide.active{opacity:1;}
+.hero::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(10,8,5,.88) 0%, rgba(10,8,5,.35) 46%, rgba(10,8,5,.15) 70%, rgba(10,8,5,.55) 100%);
+  z-index:1;
+}
+.hero-content{position:relative; z-index:2; width:100%; padding:0 clamp(20px,5vw,64px) clamp(60px,8vw,110px);}
+.hero-eyebrow{
+  font-size:.82rem; letter-spacing:.3em; text-transform:uppercase; color:var(--secondary);
+  display:flex; align-items:center; gap:.8em; margin-bottom:1.4rem; font-weight:700;
+}
+.hero-eyebrow::before{content:""; width:34px; height:1px; background:var(--secondary);}
+.hero-title{
+  font-family:var(--font-display); font-weight:800; line-height:1.05;
+  font-size:clamp(2.6rem, 7vw, 5.6rem); max-width:14ch; text-shadow:0 4px 30px rgba(0,0,0,.3);
+}
+body.lang-ar .hero-title{font-family:var(--font-ar); font-weight:900;}
+.hero-sub{margin-top:1.4rem; max-width:520px; font-size:1.12rem; line-height:1.85; color:rgba(255,255,255,.85); font-weight:300;}
+
+
+.hero-cta{display:flex; gap:16px; margin-top:2.6rem; flex-wrap:wrap;}
+.btn{
+  padding:15px 30px; border-radius:999px; font-weight:700; font-size:.95rem;
+  display:inline-flex; align-items:center; gap:10px; transition:all .4s var(--ease);
+  position:relative; overflow:hidden;
+}
+.btn-primary{background:var(--accent); color:#fff;}
+.btn-primary:hover{background:#a13537; transform:translateY(-3px); box-shadow:0 14px 30px rgba(188,71,73,.35);}
+.btn-outline{border:1.5px solid rgba(255,255,255,.6); color:#fff;}
+.btn-outline:hover{background:#fff; color:var(--text); transform:translateY(-3px);}
+
+.hero-scroll{
+  position:absolute; bottom:28px; inset-inline-end:clamp(20px,5vw,64px); z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:10px; color:rgba(255,255,255,.75);
+}
+.hero-scroll .line{width:1px; height:46px; background:linear-gradient(to bottom, rgba(255,255,255,.9), transparent); position:relative; overflow:hidden;}
+.hero-scroll .line::after{content:""; position:absolute; top:-100%; inset-inline:0; height:100%; background:var(--secondary); animation:scrollLine 1.8s infinite ease-in-out;}
+@keyframes scrollLine{ 50%{top:100%;} 100%{top:100%;} }
+.hero-scroll span{font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; writing-mode:vertical-rl;}
+
+.hero-counters{position:absolute; bottom:28px; inset-inline-start:clamp(20px,5vw,64px); z-index:2; display:flex; gap:2.4rem;}
+.hero-counters .c-num{font-family:var(--font-display); font-size:1.9rem; font-weight:700; color:var(--secondary);}
+.hero-counters .c-label{font-size:.68rem; letter-spacing:.1em; color:rgba(255,255,255,.7); margin-top:2px;}
+@media (max-width:760px){.hero-counters{display:none;}}
+
+/* ============ ABOUT ============ */
+.about{background:var(--bg);}
+.about-grid{display:grid; grid-template-columns:1fr 1.05fr; gap:clamp(30px,6vw,90px); align-items:center;}
+@media (max-width:900px){.about-grid{grid-template-columns:1fr;}}
+
+.about-visual{position:relative;}
+.about-visual .frame-main{border-radius:var(--radius); overflow:hidden; box-shadow:0 30px 60px -20px rgba(44,24,16,.35); aspect-ratio:4/5;}
+.about-visual .frame-main img{width:100%; height:100%; object-fit:cover;}
+.about-visual .frame-float{
+  position:absolute; width:46%; aspect-ratio:1/1; border-radius:14px; overflow:hidden;
+  bottom:-8%; inset-inline-start:-10%; border:6px solid var(--bg); box-shadow:0 20px 40px -10px rgba(44,24,16,.4);
+}
+.about-visual .frame-float img{width:100%; height:100%; object-fit:cover;}
+.about-badge{
+  position:absolute; top:-24px; inset-inline-end:-18px; background:var(--primary); color:#fff;
+  border-radius:50%; width:118px; height:118px; display:flex; align-items:center; justify-content:center;
+  text-align:center; font-family:var(--font-display); font-size:.78rem; line-height:1.3; padding:10px;
+  box-shadow:0 15px 30px rgba(27,67,50,.35); border:1px solid rgba(212,163,115,.5);
+}
+
+.about-text p{color:var(--text-soft); line-height:2; font-size:1.03rem; margin-top:1.3rem;}
+.about-stats{display:flex; gap:clamp(20px,4vw,50px); margin-top:2.6rem; padding-top:2rem; border-top:1px solid var(--gold-line); flex-wrap:wrap;}
+.stat .num{font-family:var(--font-display); font-size:2.4rem; font-weight:700; color:var(--primary);}
+.stat .lbl{font-size:.78rem; color:var(--text-soft); letter-spacing:.05em; margin-top:2px;}
+
+/* ============ TIMELINE ============ */
+.timeline-section{background:var(--bg-dark); color:var(--cream); position:relative;}
+.timeline-section .section-title, .timeline-section .eyebrow{color:var(--cream);}
+.timeline-section .eyebrow{color:var(--secondary);}
+.timeline-section .section-lede{color:rgba(250,246,241,.65);}
+
+.tl-nav{display:flex; gap:10px; margin-top:2.6rem; margin-bottom:2.4rem; flex-wrap:wrap;}
+.tl-tab{
+  padding:11px 22px; border-radius:999px; border:1px solid rgba(212,163,115,.35);
+  font-size:.85rem; font-weight:700; transition:all .35s var(--ease); color:rgba(250,246,241,.7);
+}
+.tl-tab.active{background:var(--secondary); color:var(--bg-dark); border-color:var(--secondary);}
+
+.tl-panel{display:none; grid-template-columns:1fr 1fr; gap:clamp(24px,5vw,60px); align-items:center;}
+.tl-panel.active{display:grid;}
+@media (max-width:860px){.tl-panel.active{grid-template-columns:1fr;}}
+.tl-imgs{display:grid; grid-template-columns:1.2fr .8fr; gap:14px;}
+.tl-imgs .tall{grid-row:span 2; border-radius:16px; overflow:hidden; aspect-ratio:3/4.4;}
+.tl-imgs .small{border-radius:16px; overflow:hidden; aspect-ratio:1/1;}
+.tl-imgs img{width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease);}
+.tl-imgs a:hover img{transform:scale(1.06);}
+.tl-time{font-family:var(--font-display); font-size:.85rem; letter-spacing:.2em; text-transform:uppercase; color:var(--secondary); margin-bottom:.8rem; display:block;}
+.tl-headline{font-family:var(--font-display); font-size:clamp(1.7rem,3.4vw,2.5rem); font-weight:700; margin-bottom:1rem;}
+body.lang-ar .tl-headline{font-family:var(--font-ar); font-weight:900;}
+.tl-desc{color:rgba(250,246,241,.72); line-height:2; font-size:1.02rem;}
+
+/* ============ BENTO ACTIVITIES ============ */
+.bento{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:3rem;
+}
+.bento-card{
+  position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/5;
+  cursor:pointer;
+}
+.bento-card img{width:100%; height:100%; object-fit:cover; transition:transform 1.1s var(--ease);}
+.bento-card:hover img{transform:scale(1.09);}
+.bento-overlay{
+  position:absolute; inset:0; background:linear-gradient(to top, rgba(10,8,5,.85) 0%, rgba(10,8,5,0) 55%);
+  display:flex; align-items:flex-end; padding:20px;
+}
+.bento-overlay h3{color:#fff; font-family:var(--font-display); font-size:1.15rem; font-weight:700;}
+body.lang-ar .bento-overlay h3{font-family:var(--font-ar); font-weight:900;}
+.bento-overlay p{color:rgba(255,255,255,.7); font-size:.8rem; margin-top:4px;}
+@media (max-width:900px){
+  .bento{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ============ MEALS ============ */
+.meals-section{background:var(--secondary); background:linear-gradient(180deg, var(--bg) 0%, #F3E7D8 100%);}
+.meal-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:3rem;}
+@media (max-width:860px){.meal-grid{grid-template-columns:1fr;}}
+.meal-card{
+  border-radius:var(--radius); overflow:hidden; position:relative; aspect-ratio:3/4;
+  background:rgba(255,255,255,.35); backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.5);
+  box-shadow:0 20px 40px -18px rgba(44,24,16,.35);
+}
+.meal-card img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+.meal-card .meal-glass{
+  position:absolute; inset:0; background:linear-gradient(to top, rgba(10,8,5,.85), rgba(10,8,5,.05) 60%);
+  z-index:1; display:flex; flex-direction:column; justify-content:flex-end; padding:26px; color:#fff;
+}
+.meal-tag{font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--secondary); margin-bottom:8px; font-weight:700;}
+.meal-card h3{font-family:var(--font-display); font-size:1.4rem; font-weight:700;}
+body.lang-ar .meal-card h3{font-family:var(--font-ar); font-weight:900;}
+.meal-card p{font-size:.86rem; margin-top:8px; color:rgba(255,255,255,.75); line-height:1.7;}
+
+/* ============ PRODUCTS ============ */
+.products-section{background:var(--bg-dark-2); color:var(--cream);}
+.products-section .eyebrow{color:var(--secondary);}
+.products-section .section-title{color:var(--cream);}
+.products-section .section-lede{color:rgba(250,246,241,.6);}
+.prod-track-wrap{margin-top:3rem; position:relative;}
+.prod-track{display:flex; gap:22px; overflow-x:auto; padding-bottom:20px; scroll-snap-type:x mandatory; scrollbar-width:none;}
+.prod-track::-webkit-scrollbar{display:none;}
+.prod-card{
+  flex:0 0 260px; scroll-snap-align:start; perspective:1000px;
+}
+.prod-card-inner{
+  border-radius:16px; overflow:hidden; background:rgba(255,255,255,.04);
+  border:1px solid rgba(212,163,115,.2); transition:transform .5s var(--ease), box-shadow .5s;
+  transform-style:preserve-3d;
+}
+.prod-card:hover .prod-card-inner{box-shadow:0 25px 50px -15px rgba(0,0,0,.6);}
+.prod-card-inner{overflow:hidden;}
+.prod-card img{
+  aspect-ratio:1/1; object-fit:cover; width:100%;
+  transform-origin:center; will-change:transform;
+  animation: prodKenBurns 14s ease-in-out infinite alternate;
+}
+.prod-card-inner:hover img{animation-play-state:paused;}
+@keyframes prodKenBurns{
+  0%{transform:scale(1) translate(0,0);}
+  100%{transform:scale(1.12) translate(-2%,-1.5%);}
+}
+.prod-info{padding:16px 18px 20px;}
+.prod-info h4{font-family:var(--font-display); font-size:1.02rem; font-weight:700; margin-bottom:6px;}
+body.lang-ar .prod-info h4{font-family:var(--font-ar); font-weight:700;}
+.prod-info p{font-size:.8rem; color:rgba(250,246,241,.55);}
+.prod-nav{display:flex; gap:10px; margin-top:1.4rem;}
+.prod-nav button{width:44px; height:44px; border-radius:50%; border:1px solid rgba(212,163,115,.4); display:flex; align-items:center; justify-content:center; transition:.3s;}
+.prod-nav button:hover{background:var(--secondary); color:var(--bg-dark);}
+
+/* ============ GALLERY ============ */
+.gallery-section{background:var(--bg);}
+.gal-filters{display:flex; gap:10px; flex-wrap:wrap; margin-top:2.6rem; margin-bottom:2rem;}
+.gal-filter{
+  padding:9px 20px; border-radius:999px; border:1px solid var(--secondary-dark); font-size:.82rem; font-weight:700;
+  color:var(--text-soft); transition:.3s var(--ease);
+}
+.gal-filter.active{background:var(--primary); color:#fff; border-color:var(--primary);}
+.gal-scroll{display:flex; gap:16px; overflow-x:auto; padding-bottom:16px; scrollbar-width:thin;}
+.gal-item{flex:0 0 300px; border-radius:14px; overflow:hidden; aspect-ratio:4/5; position:relative;}
+.gal-item img{width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease);}
+.gal-item:hover img{transform:scale(1.08);}
+
+/* ============ TESTIMONIALS ============ */
+.testi-section{background:linear-gradient(180deg,#F3E7D8, var(--bg));}
+.testi-grid{display:flex; gap:24px; overflow-x:auto; margin-top:3rem; padding-bottom:16px;}
+.testi-card{
+  flex:0 0 320px; background:#fff; border-radius:14px; padding:26px; position:relative;
+  box-shadow:0 20px 45px -25px rgba(44,24,16,.4); border:1px solid rgba(212,163,115,.25);
+  transform:rotate(-1.4deg);
+}
+.testi-card:nth-child(even){transform:rotate(1.2deg);}
+.testi-photo{width:100%; aspect-ratio:16/10; border-radius:8px; overflow:hidden; margin-bottom:16px;}
+.testi-photo img{width:100%; height:100%; object-fit:cover;}
+.testi-quote{font-family:var(--font-display); font-style:italic; font-size:1rem; color:var(--text); line-height:1.7;}
+body.lang-ar .testi-quote{font-family:var(--font-ar); font-style:normal;}
+.testi-name{margin-top:14px; font-size:.8rem; font-weight:700; color:var(--secondary-dark); letter-spacing:.05em;}
+
+/* ============ BOOKING ============ */
+.booking-section{background:var(--bg); position:relative;}
+.booking-head{max-width:720px; margin-inline:auto; text-align:center;}
+.booking-head .eyebrow{justify-content:center;}
+.booking-head .eyebrow::before{display:none;}
+.booking-head .section-lede{margin-inline:auto;}
+.booking-card{
+  max-width:880px; margin:3rem auto 0; background:#fff;
+  border:1px solid rgba(212,163,115,.3); border-radius:24px;
+  box-shadow:0 30px 70px -30px rgba(44,24,16,.25);
+  padding:clamp(28px,4vw,52px);
+}
+.booking-card .book-form input, .booking-card .book-form select, .booking-card .book-form textarea{
+  color:var(--text); border-color:rgba(92,74,61,.25); background:rgba(250,246,241,.6);
+}
+.booking-card .book-form input::placeholder, .booking-card .book-form textarea::placeholder{color:var(--text-soft);}
+.booking-card .book-form select option{color:var(--text); background:#fff;}
+.booking-perks{display:flex; flex-wrap:wrap; gap:10px 26px; justify-content:center; margin-top:1.6rem;}
+.booking-perk{display:flex; align-items:center; gap:8px; font-size:.85rem; font-weight:600; color:var(--text-soft);}
+.booking-perk svg{width:16px; height:16px; color:var(--primary-light); flex-shrink:0;}
+
+/* ============ CONTACT / FOOTER ============ */
+.contact-section{
+  background:var(--primary); color:var(--cream); position:relative; overflow:hidden;
+}
+.contact-inner{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:60px;}
+@media (max-width:900px){.contact-inner{grid-template-columns:1fr;}}
+.contact-section .eyebrow{color:var(--secondary);}
+.contact-section .section-title{color:#fff;}
+.contact-list{margin-top:2rem; display:flex; flex-direction:column; gap:18px;}
+.contact-row{display:flex; align-items:center; gap:14px; font-size:.98rem; flex-wrap:wrap;}
+.contact-row .ic{
+  width:40px; height:40px; border-radius:50%; border:1px solid rgba(212,163,115,.5);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:background .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.contact-row .ic svg{width:18px; height:18px;}
+.contact-row .ic:hover{background:var(--secondary); border-color:var(--secondary); color:var(--primary); transform:translateY(-2px);}
+.contact-row .ic.whatsapp{border-color:rgba(37,211,102,.55); color:#25D366;}
+.contact-row .ic.whatsapp:hover{background:#25D366; border-color:#25D366; color:#fff;}
+.social-row{display:flex; gap:12px; margin-top:1.6rem;}
+.social-row a{width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center; transition:.3s;}
+.social-row a svg{width:18px; height:18px;}
+.social-row a:hover{background:var(--secondary); border-color:var(--secondary); color:var(--primary); transform:translateY(-2px);}
+
+.map-frame{border-radius:16px; overflow:hidden; border:1px solid rgba(212,163,115,.35); aspect-ratio:4/3; box-shadow:0 30px 60px -20px rgba(0,0,0,.4);}
+.map-frame iframe{width:100%; height:100%; border:0;}
+
+.book-form{margin-top:2rem; display:flex; flex-direction:column; gap:14px;}
+.book-form-row{display:flex; gap:14px; flex-wrap:wrap;}
+.book-form-row > *{flex:1 1 200px;}
+.book-form input, .book-form select, .book-form textarea{
+  width:100%; background:rgba(255,255,255,.08); border:1px solid rgba(212,163,115,.3); border-radius:10px;
+  padding:13px 16px; color:#fff; font-size:.92rem; font-family:inherit;
+}
+.book-form select option{color:var(--text); background:#fff;}
+.book-form textarea{resize:vertical; min-height:90px;}
+.book-form input::placeholder, .book-form textarea::placeholder{color:rgba(255,255,255,.5);}
+.book-form label{font-size:.78rem; color:rgba(255,255,255,.6); margin-bottom:-8px; display:block;}
+.footer-bottom{margin-top:4.5rem; padding-top:1.8rem; border-top:1px solid rgba(212,163,115,.25); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:.78rem; color:rgba(255,255,255,.55); position:relative; z-index:1;}
+
+/* dark mode toggle knob */
+.theme-toggle{width:38px; height:38px; border-radius:50%; border:1px solid var(--secondary-dark); display:flex; align-items:center; justify-content:center;}
+
+/* reveal utility */
+.reveal{opacity:0; transform:translateY(46px);}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
+}
+/* ============ WIZELNE CHAT WIDGET ============ */
+.wiz-launcher{
+  position:fixed; inset-inline-end:22px; bottom:22px; z-index:800;
+  width:62px; height:62px; border-radius:50%;
+  background:var(--primary); border:2px solid var(--secondary);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 14px 34px -10px rgba(27,67,50,.55);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+  overflow:hidden;
+}
+.wiz-launcher:hover{transform:translateY(-3px) scale(1.05); box-shadow:0 18px 40px -8px rgba(27,67,50,.6);}
+.wiz-launcher img{width:100%; height:100%; object-fit:cover; border-radius:50%;}
+.wiz-launcher .wiz-icon-close{display:none; color:var(--cream); width:24px; height:24px;}
+.wiz-launcher.open .wiz-icon-close{display:block;}
+.wiz-launcher.open img{display:none;}
+.wiz-dot{
+  position:absolute; top:2px; inset-inline-end:2px; width:14px; height:14px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--bg);
+}
+.wiz-launcher.open .wiz-dot{display:none;}
+
+.wiz-panel{
+  position:fixed; inset-inline-end:22px; bottom:96px; z-index:799;
+  width:min(380px, calc(100vw - 32px)); height:min(560px, calc(100vh - 150px));
+  background:var(--bg); border-radius:20px; overflow:hidden;
+  border:1px solid var(--gold-line);
+  box-shadow:0 30px 70px -20px rgba(44,24,16,.45);
+  display:flex; flex-direction:column;
+  opacity:0; transform:translateY(16px) scale(.97); pointer-events:none;
+  transition:opacity .3s var(--ease), transform .3s var(--ease);
+}
+.wiz-panel.open{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+
+.wiz-head{
+  background:var(--primary); color:var(--cream); padding:16px 18px;
+  display:flex; align-items:center; gap:12px; flex-shrink:0;
+}
+.wiz-head img{width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid var(--secondary); flex-shrink:0;}
+.wiz-head .wiz-title{font-family:var(--font-display); font-weight:700; font-size:1rem;}
+body.lang-ar .wiz-head .wiz-title{font-family:var(--font-ar); font-weight:900;}
+.wiz-head .wiz-status{font-size:.72rem; color:var(--secondary); display:flex; align-items:center; gap:6px;}
+.wiz-head .wiz-status::before{content:""; width:7px; height:7px; border-radius:50%; background:#4ADE80; display:inline-block;}
+
+.wiz-body{flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; background:var(--bg);}
+.wiz-msg{max-width:82%; padding:10px 14px; border-radius:14px; font-size:.88rem; line-height:1.6; white-space:pre-wrap;}
+.wiz-msg.bot{align-self:flex-start; background:#fff; color:var(--text); border:1px solid rgba(212,163,115,.3); border-start-start-radius:4px;}
+.wiz-msg.user{align-self:flex-end; background:var(--primary); color:var(--cream); border-start-end-radius:4px;}
+.wiz-typing{align-self:flex-start; display:flex; gap:4px; padding:12px 14px; background:#fff; border:1px solid rgba(212,163,115,.3); border-radius:14px; border-start-start-radius:4px;}
+.wiz-typing span{width:6px; height:6px; border-radius:50%; background:var(--secondary-dark); animation:wizBlink 1.2s infinite ease-in-out;}
+.wiz-typing span:nth-child(2){animation-delay:.15s;}
+.wiz-typing span:nth-child(3){animation-delay:.3s;}
+@keyframes wizBlink{0%,80%,100%{opacity:.3; transform:scale(.8);} 40%{opacity:1; transform:scale(1);}}
+
+.wiz-foot{display:flex; align-items:center; gap:10px; padding:12px; border-top:1px solid rgba(212,163,115,.3); background:#fff; flex-shrink:0;}
+.wiz-foot input{
+  flex:1; border:1px solid rgba(92,74,61,.25); border-radius:999px; padding:10px 16px;
+  font-size:.88rem; color:var(--text); background:var(--bg); font-family:inherit;
+}
+body.lang-ar .wiz-foot input{font-family:var(--font-ar);}
+.wiz-foot input:focus{outline:2px solid var(--secondary);}
+.wiz-foot button{
+  width:40px; height:40px; border-radius:50%; background:var(--primary); color:var(--cream);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:.3s;
+}
+.wiz-foot button:hover{background:var(--primary-light);}
+.wiz-foot button svg{width:18px; height:18px;}
+[dir="rtl"] .wiz-foot button svg{transform:scaleX(-1);}
+
+@media (max-width:480px){
+  .wiz-launcher{inset-inline-end:16px; bottom:16px; width:56px; height:56px;}
+  .wiz-panel{inset-inline-end:16px; bottom:84px; width:calc(100vw - 24px); height:min(520px, calc(100vh - 130px));}
+}
+
+</style>
+</head>
+<body class="dark-theme lang-en">
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav dark-mode" id="mainNav">
+  <div class="nav-brand">
+    <img src="https://ouizelne.github.io/ouizelne-cooperative/logo.jpeg" alt="شعار ويزلن">
+    <span class="name"><span class="t-ar">ويزلن</span><span class="t-fr">Ouizelne</span><span class="t-en">Ouizelne</span><span class="t-es">Ouizelne</span></span>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" class="magnetic"><span class="t-ar">القصة</span><span class="t-fr">Histoire</span><span class="t-en">Our Story</span><span class="t-es">Nuestra historia</span></a></li>
+    <li><a href="#timeline" class="magnetic"><span class="t-ar">الرحلة</span><span class="t-fr">L'expérience</span><span class="t-en">The Experience</span><span class="t-es">La experiencia</span></a></li>
+    <li><a href="#activities" class="magnetic"><span class="t-ar">الأنشطة</span><span class="t-fr">Activités</span><span class="t-en">Activities</span><span class="t-es">Actividades</span></a></li>
+    <li><a href="#products" class="magnetic"><span class="t-ar">المنتجات</span><span class="t-fr">Produits</span><span class="t-en">Products</span><span class="t-es">Productos</span></a></li>
+    <li><a href="#gallery" class="magnetic"><span class="t-ar">المعرض</span><span class="t-fr">Galerie</span><span class="t-en">Gallery</span><span class="t-es">Galería</span></a></li>
+    <li><a href="#booking" class="magnetic"><span class="t-ar">الحجز</span><span class="t-fr">Réservation</span><span class="t-en">Booking</span><span class="t-es">Reserva</span></a></li>
+    <li><a href="#contact" class="magnetic"><span class="t-ar">تواصل معنا</span><span class="t-fr">Contact</span><span class="t-en">Contact</span><span class="t-es">Contacto</span></a></li>
+  </ul>
+  <div class="nav-tools">
+    <button class="theme-toggle magnetic" id="themeToggle" aria-label="dark mode">☀</button>
+    <div class="lang-select-wrap">
+      <button class="pill-btn magnetic" id="langToggle" aria-haspopup="listbox" aria-expanded="false">
+        <span id="langCurrent">EN</span> <span aria-hidden="true">▾</span>
+      </button>
+      <ul class="lang-menu" id="langMenu" role="listbox">
+        <li role="option" data-lang="en" class="active">English</li>
+        <li role="option" data-lang="fr">Français</li>
+        <li role="option" data-lang="ar">العربية</li>
+        <li role="option" data-lang="es">Español</li>
+      </ul>
+    </div>
+    <button class="nav-burger magnetic" id="burger" aria-label="menu"><div class="burger-icon"><i></i><i></i><i></i></div></button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="hero">
+  <div class="hero-slide active" style="background-image:url('https://ouizelne.github.io/ouizelne-cooperative/500.jpeg')"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="t-ar">تعاونية نسائية · جبال الأطلس · المغرب</span>
+      <span class="t-fr">Coopérative féminine · Montagnes de l'Atlas · Maroc</span><span class="t-en">Women's cooperative · Atlas Mountains · Morocco</span><span class="t-es">Cooperativa femenina · Montañas del Atlas · Marruecos</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="t-ar">ويزلن، حيث تلتقي الأصالة بالسماء</span>
+      <span class="t-fr">Ouizelne, là où l'authenticité rencontre le ciel</span><span class="t-en">Ouizelne, where authenticity meets the sky</span><span class="t-es">Ouizelne, donde la autenticidad se encuentra con el cielo</span>
+    </h1>
+    <p class="hero-sub">
+      <span class="t-ar">يوم كامل من الاستقبال الأمازيغي الدافئ، استخراج زيت الأركان بالمطحنة التقليدية، خبز على نار الحطب، وشاي المساء تحت سماء مرصّعة بالنجوم.</span>
+      <span class="t-fr">Une journée complète d'accueil amazigh chaleureux, d'extraction traditionnelle de l'huile d'argan, de pain cuit au feu de bois et de thé du soir sous un ciel étoilé.</span><span class="t-en">A full day of warm Amazigh hospitality, traditional argan oil extraction, wood-fired bread, and evening tea under a star-studded sky.</span><span class="t-es">Un día completo de cálida hospitalidad amazigh, extracción tradicional de aceite de argán, pan cocido a leña y té vespertino bajo un cielo estrellado.</span>
+    </p>
+    <div class="hero-cta">
+      <a href="#booking" class="btn btn-primary magnetic">
+        <span class="t-ar">احجزي زيارتك</span><span class="t-fr">Réserver la visite</span><span class="t-en">Book your visit</span><span class="t-es">Reserva tu visita</span>
+      </a>
+      <a href="#timeline" class="btn btn-outline magnetic">
+        <span class="t-ar">اكتشفي الرحلة</span><span class="t-fr">Découvrir l'expérience</span><span class="t-en">Discover the experience</span><span class="t-es">Descubre la experiencia</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-counters">
+    <div><div class="c-num">9</div><div class="c-label t-ar">محطات في الرحلة</div><div class="c-label t-fr">étapes du voyage</div><div class="c-label t-en">stops on the journey</div><div class="c-label t-es">etapas del viaje</div></div>
+    <div><div class="c-num">100%</div><div class="c-label t-ar">حرفية يدوية</div><div class="c-label t-fr">artisanat manuel</div><div class="c-label t-en">handmade craftsmanship</div><div class="c-label t-es">artesanía manual</div></div>
+  </div>
+  <div class="hero-scroll"><span class="t-ar">مرّري للأسفل</span><span class="t-fr">Défiler</span><span class="t-en">Scroll down</span><span class="t-es">Desplázate</span><div class="line"></div></div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="about section-pad">
+  <div class="wrap about-grid">
+    <div class="about-visual reveal">
+      <div class="about-badge">
+        <span class="t-ar">الذهب السائل للأطلس</span>
+        <span class="t-fr">L'or liquide de l'Atlas</span><span class="t-en">Liquid gold of the Atlas</span><span class="t-es">Oro líquido del Atlas</span>
+      </div>
+      <div class="frame-main"><img src="https://ouizelne.github.io/ouizelne-cooperative/1.webp" alt="طحن الأركان" loading="lazy" decoding="async"></div>
+      <div class="frame-float"><img src="https://ouizelne.github.io/ouizelne-cooperative/4.webp" alt="مبنى التعاونية" loading="lazy" decoding="async"></div>
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow"><span class="t-ar">قصتنا</span><span class="t-fr">Notre histoire</span><span class="t-en">Our story</span><span class="t-es">Nuestra historia</span></span>
+      <h2 class="section-title">
+        <span class="t-ar">أكثر من زيت الأركان... دعوة لعيش يوم أمازيغي أصيل</span>
+        <span class="t-fr">Plus que de l'huile d'argan — une invitation à vivre une journée amazighe authentique</span><span class="t-en">More than argan oil — an invitation to live an authentic Amazigh day</span><span class="t-es">Más que aceite de argán: una invitación a vivir un día amazigh auténtico</span>
+      </h2>
+      <p class="t-ar">في قلب جبال الأطلس، حيث تلتقي القمم بالسماء الصافية، تفتح تعاونية ويزلن أبوابها لتقدّم أكثر من زيت الأركان الأصيل ومنتجات العناية الطبيعية. استقبال دافئ كأنك من العائلة، رقص على إيقاعات موسيقى أمازيغية أصيلة، وجولة في متحف حي يحتضن قطعاً أثرية تروي حكاية المنطقة.</p>
+      <p class="t-ar">مشاركة حقيقية في طحن حبات الأركان بالمطحنة التقليدية واستخراج "الذهب السائل"، تذوّق رائحة الخبز البلدي وهو يُخبز فوق طاجين من الطين على نار الحطب، وارتداء القفطان التقليدي قبل احتساء شاي مغربي أصيل مع الغروب.</p>
+      <p class="t-fr">Au cœur des montagnes de l'Atlas, là où les sommets touchent un ciel limpide, la coopérative Ouizelne ouvre ses portes pour offrir bien plus que de l'huile d'argan authentique et des produits de soin naturels. Un accueil chaleureux comme en famille, une danse sur des rythmes amazighs, et la visite d'un musée vivant qui raconte l'histoire de la région.</p><p class="t-en">In the heart of the Atlas Mountains, where the peaks meet a clear sky, the Ouizelne cooperative opens its doors to offer far more than authentic argan oil and natural care products. A warm welcome like family, dancing to genuine Amazigh rhythms, and a tour of a living museum that tells the story of the region.</p><p class="t-es">En el corazón de las montañas del Atlas, donde las cumbres tocan un cielo despejado, la cooperativa Ouizelne abre sus puertas para ofrecer mucho más que aceite de argán auténtico y productos de cuidado natural. Una bienvenida cálida como en familia, baile al ritmo de música amazigh auténtica y un recorrido por un museo vivo que cuenta la historia de la región.</p>
+      <p class="t-fr">Une participation réelle au broyage des amandons d'argan à la meule traditionnelle pour extraire « l'or liquide », le pain beldi cuit sur un tajine d'argile au feu de bois, le port du caftan traditionnel, puis un thé marocain au coucher du soleil face à la montagne.</p><p class="t-en">Real participation in grinding argan kernels with the traditional millstone to extract the "liquid gold", the beldi bread baking on a clay tajine over a wood fire, wearing the traditional caftan, then authentic Moroccan tea at sunset facing the mountain.</p><p class="t-es">Participación real en la molienda de las almendras de argán con la muela tradicional para extraer el "oro líquido", el pan beldi horneándose sobre un tajín de barro a fuego de leña, vestir el caftán tradicional y después un té marroquí auténtico al atardecer frente a la montaña.</p>
+      <div class="about-stats">
+        <div class="stat"><div class="num">92</div><div class="lbl t-ar">لحظة موثّقة بالصور</div><div class="lbl t-fr">moments en photos</div><div class="lbl t-en">moments captured in photos</div><div class="lbl t-es">momentos en fotos</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl t-ar">محطات حرفية يدوية</div><div class="lbl t-fr">ateliers artisanaux</div><div class="lbl t-en">hands-on craft workshops</div><div class="lbl t-es">talleres artesanales</div></div>
+        <div class="stat"><div class="num">1</div><div class="lbl t-ar">سماء صافية بلا حدود</div><div class="lbl t-fr">ciel étoilé sans limites</div><div class="lbl t-en">boundless starry sky</div><div class="lbl t-es">cielo estrellado sin límites</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="timeline" class="timeline-section section-pad wood-texture">
+  <div class="wrap">
+    <span class="eyebrow"><span class="t-ar">رحلة اليوم</span><span class="t-fr">Le fil de la journée</span><span class="t-en">The day's journey</span><span class="t-es">El hilo del día</span></span>
+    <h2 class="section-title"><span class="t-ar">من الصباح إلى تحت النجوم</span><span class="t-fr">Du matin jusque sous les étoiles</span><span class="t-en">From morning to under the stars</span><span class="t-es">De la mañana a las estrellas</span></h2>
+    <p class="section-lede"><span class="t-ar">كل ساعة من زيارتك مرتبة بعناية لتكتشفي إيقاع الحياة الأمازيغية اليومية، خطوة بخطوة.</span><span class="t-fr">Chaque heure de votre visite est pensée pour découvrir, étape par étape, le rythme quotidien de la vie amazighe.</span><span class="t-en">Every hour of your visit is carefully arranged so you can discover the rhythm of daily Amazigh life, step by step.</span><span class="t-es">Cada hora de tu visita está pensada para descubrir, paso a paso, el ritmo de la vida amazigh cotidiana.</span></p>
+
+    <div class="tl-nav" id="tlNav">
+      <button class="tl-tab active" data-tab="morning"><span class="t-ar">الصباح</span><span class="t-fr">Matin</span><span class="t-en">Morning</span><span class="t-es">Mañana</span></button>
+      <button class="tl-tab" data-tab="noon"><span class="t-ar">الظهيرة</span><span class="t-fr">Midi</span><span class="t-en">Noon</span><span class="t-es">Mediodía</span></button>
+      <button class="tl-tab" data-tab="afternoon"><span class="t-ar">العصر</span><span class="t-fr">Après-midi</span><span class="t-en">Afternoon</span><span class="t-es">Tarde</span></button>
+      <button class="tl-tab" data-tab="evening"><span class="t-ar">المساء</span><span class="t-fr">Soir</span><span class="t-en">Evening</span><span class="t-es">Noche</span></button>
+    </div>
+
+    <div class="tl-panel active" data-panel="morning">
+      <div class="tl-imgs">
+        <a class="tall" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/16.jpeg" loading="lazy" alt="استقبال الزوار"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/59.jpeg" loading="lazy" alt="رقص أمازيغي"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/406.jpg" loading="lazy" alt="المتحف التراثي"></a>
+      </div>
+      <div>
+        <span class="tl-time t-ar">08:00 — 11:00 صباحاً</span><span class="tl-time t-fr">08h00 — 11h00</span><span class="tl-time t-en">08:00 — 11:00 AM</span><span class="tl-time t-es">08:00 — 11:00</span>
+        <h3 class="tl-headline"><span class="t-ar">استقبال، رقص أمازيغي، ومتحف حيّ</span><span class="t-fr">Accueil, danse amazighe et musée vivant</span><span class="t-en">Welcome, Amazigh dance, and a living museum</span><span class="t-es">Bienvenida, danza amazigh y museo vivo</span></h3>
+        <p class="tl-desc t-ar">تبدأ الرحلة باستقبال دافئ من نساء التعاونية، يتبعه رقص جماعي على إيقاعات أمازيغية أصيلة، ثم جولة في متحف صغير يحتضن أدوات وقطعاً تراثية تروي تاريخ المنطقة وأهلها.</p>
+        <p class="tl-desc t-fr">Le voyage commence par un accueil chaleureux des femmes de la coopérative, suivi d'une danse collective sur des rythmes amazighs, puis d'une visite d'un petit musée abritant des objets qui racontent l'histoire de la région.</p><p class="tl-desc t-en">The journey begins with a warm welcome from the cooperative's women, followed by a collective dance to authentic Amazigh rhythms, then a visit to a small museum housing objects that tell the story of the region.</p><p class="tl-desc t-es">El viaje comienza con una cálida bienvenida de las mujeres de la cooperativa, seguida de una danza colectiva al ritmo amazigh, y después una visita a un pequeño museo con objetos que cuentan la historia de la región.</p>
+      </div>
+    </div>
+
+    <div class="tl-panel" data-panel="noon">
+      <div class="tl-imgs">
+        <a class="tall" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/91.jpeg" loading="lazy" alt="طحن الأركان"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/504.jpg" loading="lazy" alt="خبز بلدي"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/92.jpeg" loading="lazy" alt="فرن تقليدي"></a>
+      </div>
+      <div>
+        <span class="tl-time t-ar">11:00 — 14:00 ظهراً</span><span class="tl-time t-fr">11h00 — 14h00</span><span class="tl-time t-en">11:00 AM — 2:00 PM</span><span class="tl-time t-es">11:00 — 14:00</span>
+        <h3 class="tl-headline"><span class="t-ar">طحن الأركان وخبز على نار الحطب</span><span class="t-fr">Broyage de l'argan et pain au feu de bois</span><span class="t-en">Grinding argan and wood-fired bread</span><span class="t-es">Molienda de argán y pan a leña</span></h3>
+        <p class="tl-desc t-ar">تشاركين النساء المحليات في طحن حبات الأركان بالمطحنة التقليدية لاستخراج "الذهب السائل"، بينما يفوح في الهواء عبق الخبز البلدي وهو يُخبز فوق طاجين من الطين.</p>
+        <p class="tl-desc t-fr">Vous participez au broyage des amandons d'argan à la meule traditionnelle pour en extraire « l'or liquide », pendant que le pain beldi cuit sur un tajine d'argile embaume l'air environnant.</p><p class="tl-desc t-en">You join local women in grinding argan kernels with the traditional millstone to extract the "liquid gold", while the aroma of beldi bread baking on a clay tajine fills the air.</p><p class="tl-desc t-es">Te unes a las mujeres locales para moler las almendras de argán con la muela tradicional y extraer el "oro líquido", mientras el aroma del pan beldi horneándose sobre un tajín de barro impregna el aire.</p>
+      </div>
+    </div>
+
+    <div class="tl-panel" data-panel="afternoon">
+      <div class="tl-imgs">
+        <a class="tall" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/3.webp" loading="lazy" alt="نسج الزرابي"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/8.webp" loading="lazy" alt="القفطان التقليدي"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/54.jpeg" loading="lazy" alt="صوف الأغنام"></a>
+      </div>
+      <div>
+        <span class="tl-time t-ar">14:00 — 17:00 عصراً</span><span class="tl-time t-fr">14h00 — 17h00</span><span class="tl-time t-en">2:00 PM — 5:00 PM</span><span class="tl-time t-es">14:00 — 17:00</span>
+        <h3 class="tl-headline"><span class="t-ar">القفطان ونسج الزرابي</span><span class="t-fr">Caftan et tissage de tapis</span><span class="t-en">Caftan and rug weaving</span><span class="t-es">Caftán y tejido de alfombras</span></h3>
+        <p class="tl-desc t-ar">ترتدين القفطان التقليدي وتتعرّفين على فن نسج الزرابي من صوف الأغنام مع النساء المحليات، حرفة تتوارثها الأجيال بصبر وأناة على المنسج الخشبي.</p>
+        <p class="tl-desc t-fr">Vous revêtez le caftan traditionnel et découvrez l'art du tissage de tapis en laine de mouton avec les femmes locales, un savoir-faire transmis de génération en génération sur le métier à tisser.</p><p class="tl-desc t-en">You wear the traditional caftan and discover the art of weaving rugs from sheep's wool with local women, a craft passed down through generations on the wooden loom.</p><p class="tl-desc t-es">Te pones el caftán tradicional y descubres el arte de tejer alfombras de lana de oveja con las mujeres locales, un oficio transmitido de generación en generación en el telar de madera.</p>
+      </div>
+    </div>
+
+    <div class="tl-panel" data-panel="evening">
+      <div class="tl-imgs">
+        <a class="tall" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/404.jpg" loading="lazy" alt="شاي المساء"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/61.jpeg" loading="lazy" alt="غروب الجبال"></a>
+        <a class="small" href="#"><img src="https://ouizelne.github.io/ouizelne-cooperative/87.jpeg" loading="lazy" alt="سماء الليل"></a>
+      </div>
+      <div>
+        <span class="tl-time t-ar">17:00 — 21:00 مساءً</span><span class="tl-time t-fr">17h00 — 21h00</span><span class="tl-time t-en">5:00 PM — 9:00 PM</span><span class="tl-time t-es">17:00 — 21:00</span>
+        <h3 class="tl-headline"><span class="t-ar">شاي، تلسكوب، ووجبة تحت النجوم</span><span class="t-fr">Thé, télescope et dîner sous les étoiles</span><span class="t-en">Tea, telescope, and dinner under the stars</span><span class="t-es">Té, telescopio y cena bajo las estrellas</span></h3>
+        <p class="tl-desc t-ar">تحتسين شاياً مغربياً أصيلاً مع غروب الشمس بإطلالة على الجبال، ثم تجربة فلكية عبر تلسكوب يكشف سماء صافية بعيدة عن أضواء المدينة، تُختتم بوجبة عشاء أصيلة.</p>
+        <p class="tl-desc t-fr">Vous savourez un thé marocain authentique au coucher du soleil face aux montagnes, puis une expérience astronomique au télescope sous un ciel dégagé loin des lumières de la ville, avant un dîner authentique.</p><p class="tl-desc t-en">You savor authentic Moroccan tea at sunset facing the mountains, then an astronomical experience through a telescope under a clear sky far from city lights, closing with an authentic dinner.</p><p class="tl-desc t-es">Disfrutas de un té marroquí auténtico al atardecer frente a las montañas, luego una experiencia astronómica con telescopio bajo un cielo despejado lejos de las luces de la ciudad, y todo culmina con una cena auténtica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACTIVITIES BENTO ============ -->
+<section id="activities" class="section-pad">
+  <div class="wrap">
+    <span class="eyebrow"><span class="t-ar">الأنشطة</span><span class="t-fr">Activités</span><span class="t-en">Activities</span><span class="t-es">Actividades</span></span>
+    <h2 class="section-title"><span class="t-ar">حرف يدوية تُعاش لا تُشاهد فقط</span><span class="t-fr">Des artisanats à vivre, pas seulement à observer</span><span class="t-en">Crafts to live, not just watch</span><span class="t-es">Artesanía para vivir, no solo observar</span></h2>
+    <p class="section-lede"><span class="t-ar">تسع تجارب حسية تجمعك بالمكان وأهله.</span><span class="t-fr">Neuf expériences sensorielles qui vous relient au lieu et à ses habitants.</span><span class="t-en">Nine sensory experiences that connect you to the place and its people.</span><span class="t-es">Nueve experiencias sensoriales que te conectan con el lugar y su gente.</span></p>
+
+    <div class="bento">
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/2.webp" loading="lazy" alt="طحن الأركان"><div class="bento-overlay"><div><h3 class="t-ar">طحن الأركان</h3><h3 class="t-fr">Broyage d'argan</h3><h3 class="t-en">Argan grinding</h3><h3 class="t-es">Molienda de argán</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/79.jpeg" loading="lazy" alt="الخبز البلدي"><div class="bento-overlay"><div><h3 class="t-ar">الخبز البلدي</h3><h3 class="t-fr">Pain beldi</h3><h3 class="t-en">Beldi bread</h3><h3 class="t-es">Pan beldi</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/35.jpeg" loading="lazy" alt="الزي التقليدي"><div class="bento-overlay"><div><h3 class="t-ar">القفطان</h3><h3 class="t-fr">Caftan</h3><h3 class="t-en">Caftan</h3><h3 class="t-es">Caftán</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/61.jpeg" loading="lazy" alt="التلسكوب والنجوم"><div class="bento-overlay"><div><h3 class="t-ar">مراقبة النجوم</h3><h3 class="t-fr">Observation des étoiles</h3><h3 class="t-en">Stargazing</h3><h3 class="t-es">Observación de estrellas</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/76.jpeg" loading="lazy" alt="الضيافة والشاي"><div class="bento-overlay"><div><h3 class="t-ar">الضيافة وشاي المساء</h3><h3 class="t-fr">Hospitalité &amp; thé du soir</h3><h3 class="t-en">Hospitality &amp; evening tea</h3><h3 class="t-es">Hospitalidad y té vespertino</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/1.webp" loading="lazy" alt="حياكة السلال"><div class="bento-overlay"><div><h3 class="t-ar">حياكة السلال</h3><h3 class="t-fr">Vannerie traditionnelle</h3><h3 class="t-en">Basket weaving</h3><h3 class="t-es">Cestería tradicional</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/72.jpg" loading="lazy" alt="تكسير حبوب الأركان"><div class="bento-overlay"><div><h3 class="t-ar">تكسير حبوب الأركان</h3><h3 class="t-fr">Concassage des noyaux d'argan</h3><h3 class="t-en">Cracking argan kernels</h3><h3 class="t-es">Rotura de nueces de argán</h3></div></div></div>
+      <div class="bento-card"><img src="https://ouizelne.github.io/ouizelne-cooperative/70.jpg" loading="lazy" alt="تحضير الكسكس"><div class="bento-overlay"><div><h3 class="t-ar">تحضير الكسكس</h3><h3 class="t-fr">Préparation du couscous</h3><h3 class="t-en">Couscous preparation</h3><h3 class="t-es">Preparación del cuscús</h3></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEALS ============ -->
+<section class="meals-section section-pad">
+  <div class="wrap">
+    <span class="eyebrow"><span class="t-ar">مائدة الزمن الجميل</span><span class="t-fr">La table du temps retrouvé</span><span class="t-en">The table of good times</span><span class="t-es">La mesa del buen tiempo</span></span>
+    <h2 class="section-title"><span class="t-ar">نكهات أصيلة على مدار اليوم</span><span class="t-fr">Des saveurs authentiques au fil de la journée</span><span class="t-en">Authentic flavors throughout the day</span><span class="t-es">Sabores auténticos durante todo el día</span></h2>
+
+    <div class="meal-grid">
+      <div class="meal-card reveal">
+        <img src="https://ouizelne.github.io/ouizelne-cooperative/79.jpeg" loading="lazy" alt="الفطور">
+        <div class="meal-glass">
+          <span class="meal-tag t-ar">الفطور</span><span class="meal-tag t-fr">Petit-déjeuner</span><span class="meal-tag t-en">Breakfast</span><span class="meal-tag t-es">Desayuno</span>
+          <h3 class="t-ar">أركان، عسل وزيتون</h3><h3 class="t-fr">Argan, miel &amp; olives</h3><h3 class="t-en">Argan, honey &amp; olives</h3><h3 class="t-es">Argán, miel y aceitunas</h3>
+          <p class="t-ar">مائدة صباحية بسيطة وصادقة، بمذاق البيت.</p>
+          <p class="t-fr">Une table matinale simple et sincère, au goût de la maison.</p><p class="t-en">A simple, honest morning table with a homemade taste.</p><p class="t-es">Una mesa matutina sencilla y sincera, con sabor a hogar.</p>
+        </div>
+      </div>
+      <div class="meal-card reveal">
+        <img src="https://ouizelne.github.io/ouizelne-cooperative/70.jpg" loading="lazy" alt="الغداء">
+        <div class="meal-glass">
+          <span class="meal-tag t-ar">الغداء</span><span class="meal-tag t-fr">Déjeuner</span><span class="meal-tag t-en">Lunch</span><span class="meal-tag t-es">Almuerzo</span>
+          <h3 class="t-ar">كسكس وطاجين</h3><h3 class="t-fr">Couscous &amp; tajine</h3><h3 class="t-en">Couscous &amp; tajine</h3><h3 class="t-es">Cuscús y tajín</h3>
+          <p class="t-ar">وصفات تقليدية تُطهى بصبر على نار هادئة.</p>
+          <p class="t-fr">Des recettes traditionnelles mijotées avec patience.</p><p class="t-en">Traditional recipes simmered patiently over a gentle flame.</p><p class="t-es">Recetas tradicionales cocinadas con paciencia a fuego lento.</p>
+        </div>
+      </div>
+      <div class="meal-card reveal">
+        <img src="https://ouizelne.github.io/ouizelne-cooperative/86.jpg" loading="lazy" alt="العشاء الثقافي">
+        <div class="meal-glass">
+          <span class="meal-tag t-ar">العشاء</span><span class="meal-tag t-fr">Dîner</span><span class="meal-tag t-en">Dinner</span><span class="meal-tag t-es">Cena</span>
+          <h3 class="t-ar">جلسة الشاي المسائية</h3><h3 class="t-fr">Veillée autour du thé</h3><h3 class="t-en">Evening tea gathering</h3><h3 class="t-es">Velada de té</h3>
+          <p class="t-ar">ختام اليوم بحكايات وشاي وسماء صافية.</p>
+          <p class="t-fr">La journée s'achève en récits, thé et ciel étoilé.</p><p class="t-en">The day ends with stories, tea, and a clear sky.</p><p class="t-es">El día termina con historias, té y un cielo despejado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section id="products" class="products-section section-pad">
+  <div class="wrap">
+    <span class="eyebrow"><span class="t-ar">المتجر</span><span class="t-fr">La boutique</span><span class="t-en">The shop</span><span class="t-es">La tienda</span></span>
+    <h2 class="section-title"><span class="t-ar">منتجات طبيعية 100% من الأطلس</span><span class="t-fr">Des produits 100% naturels de l'Atlas</span><span class="t-en">100% natural products from the Atlas</span><span class="t-es">Productos 100% naturales del Atlas</span></h2>
+    <p class="section-lede"><span class="t-ar">كل منتج مصنوع يدوياً من قبل نساء التعاونية بمكونات محلية خالصة.</span><span class="t-fr">Chaque produit est fabriqué à la main par les femmes de la coopérative, à partir d'ingrédients locaux purs.</span><span class="t-en">Every product is handmade by the cooperative's women using pure local ingredients.</span><span class="t-es">Cada producto está hecho a mano por las mujeres de la cooperativa con ingredientes locales puros.</span></p>
+
+    <div class="prod-track-wrap">
+      <div class="prod-track" id="prodTrack">
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/10.jpeg" loading="lazy" alt="صابون بلدي"><div class="prod-info"><h4 class="t-ar">مقشّر القهوة / الصابون البلدي</h4><h4 class="t-fr">Gommage café / savon beldi</h4><h4 class="t-en">Coffee scrub / beldi soap</h4><h4 class="t-es">Exfoliante de café / jabón beldi</h4><p class="t-ar">تقشير طبيعي عميق</p><p class="t-fr">Exfoliant naturel intense</p><p class="t-en">Deep natural exfoliation</p><p class="t-es">Exfoliación natural profunda</p></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/11.jpeg" loading="lazy" alt="أقنعة الطين"><div class="prod-info"><h4 class="t-ar">أقنعة الطين المغربي</h4><h4 class="t-fr">Masques d'argile marocaine</h4><h4 class="t-en">Moroccan clay masks</h4><h4 class="t-es">Mascarillas de arcilla marroquí</h4><p class="t-ar">أبيض · أحمر · أخضر</p><p class="t-fr">Blanche · rouge · verte</p><p class="t-en">White · red · green</p><p class="t-es">Blanca · roja · verde</p></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/12.jpeg" loading="lazy" alt="زيت أركان وعسل"><div class="prod-info"><h4 class="t-ar">شاي ملكي، عسل، أركان، أملو</h4><h4 class="t-fr">Thé royal, miel, argan, amlou</h4><h4 class="t-en">Royal tea, honey, argan, amlou</h4><h4 class="t-es">Té real, miel, argán, amlou</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/14.jpeg" loading="lazy" alt="مقشر الزعفران"><div class="prod-info"><h4 class="t-ar">مقشر السكر والزعفران والعسل</h4><h4 class="t-fr">Gommage sucre, safran &amp; miel</h4><h4 class="t-en">Sugar, saffron &amp; honey scrub</h4><h4 class="t-es">Exfoliante de azúcar, azafrán y miel</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/15.jpeg" loading="lazy" alt="كريم مضاد للشيخوخة"><div class="prod-info"><h4 class="t-ar">كريم مقاوم لعلامات الشيخوخة</h4><h4 class="t-fr">Crème anti-âge</h4><h4 class="t-en">Anti-aging cream</h4><h4 class="t-es">Crema antiedad</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/17.jpeg" loading="lazy" alt="زيت العنبر"><div class="prod-info"><h4 class="t-ar">زيت معطّر بالعنبر</h4><h4 class="t-fr">Huile parfumée à l'ambre</h4><h4 class="t-en">Amber-scented oil</h4><h4 class="t-es">Aceite perfumado con ámbar</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/21.jpeg" loading="lazy" alt="زيت أركان عضوي"><div class="prod-info"><h4 class="t-ar">زيت أركان عضوي وسيروم إكليل الجبل</h4><h4 class="t-fr">Huile d'argan bio &amp; sérum romarin</h4><h4 class="t-en">Organic argan oil &amp; rosemary serum</h4><h4 class="t-es">Aceite de argán orgánico y sérum de romero</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/18.jpeg" loading="lazy" alt="كريم غاردينيا"><div class="prod-info"><h4 class="t-ar">كريم غاردينيا</h4><h4 class="t-fr">Crème gardénia</h4><h4 class="t-en">Gardenia cream</h4><h4 class="t-es">Crema de gardenia</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/19.jpeg" loading="lazy" alt="مقشر النيلة"><div class="prod-info"><h4 class="t-ar">مقشر النيلة</h4><h4 class="t-fr">Gommage à l'indigo</h4><h4 class="t-en">Indigo scrub</h4><h4 class="t-es">Exfoliante de índigo</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/24.jpeg" loading="lazy" alt="مقشر القهوة 100غ"><div class="prod-info"><h4 class="t-ar">مقشر القهوة (100غ)</h4><h4 class="t-fr">Gommage café (100g)</h4><h4 class="t-en">Coffee scrub (100g)</h4><h4 class="t-es">Exfoliante de café (100g)</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/50.jpeg" loading="lazy" alt="جل استحمام"><div class="prod-info"><h4 class="t-ar">جل استحمام وحليب الجسم بزهر البرتقال</h4><h4 class="t-fr">Gel douche &amp; lait corps fleur d'oranger</h4><h4 class="t-en">Shower gel &amp; orange blossom body lotion</h4><h4 class="t-es">Gel de ducha y loción corporal de azahar</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/52.jpeg" loading="lazy" alt="زيوت معطرة"><div class="prod-info"><h4 class="t-ar">زيوت معطرة (بخور، غاردينيا، زهر البرتقال)</h4><h4 class="t-fr">Huiles parfumées (encens, gardénia, fleur d'oranger)</h4><h4 class="t-en">Scented oils (incense, gardenia, orange blossom)</h4><h4 class="t-es">Aceites perfumados (incienso, gardenia, azahar)</h4></div></div></div>
+        <div class="prod-card"><div class="prod-card-inner"><img src="https://ouizelne.github.io/ouizelne-cooperative/56.jpeg" loading="lazy" alt="سيروم إكليل الجبل"><div class="prod-info"><h4 class="t-ar">سيروم إكليل الجبل</h4><h4 class="t-fr">Sérum au romarin</h4><h4 class="t-en">Rosemary serum</h4><h4 class="t-es">Sérum de romero</h4></div></div></div>
+      </div>
+      <div class="prod-nav">
+        <button class="magnetic" id="prodPrev" aria-label="prev">←</button>
+        <button class="magnetic" id="prodNext" aria-label="next">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="gallery-section section-pad">
+  <div class="wrap">
+    <span class="eyebrow"><span class="t-ar">معرض الذكريات</span><span class="t-fr">Galerie de souvenirs</span><span class="t-en">Memory gallery</span><span class="t-es">Galería de recuerdos</span></span>
+    <h2 class="section-title"><span class="t-ar">لحظات موثّقة من ويزلن</span><span class="t-fr">Instants capturés à Ouizelne</span><span class="t-en">Moments captured at Ouizelne</span><span class="t-es">Momentos capturados en Ouizelne</span></h2>
+
+    <div class="gal-filters" id="galFilters">
+      <button class="gal-filter active" data-filter="all"><span class="t-ar">الكل</span><span class="t-fr">Tout</span><span class="t-en">All</span><span class="t-es">Todo</span></button>
+      <button class="gal-filter" data-filter="craft"><span class="t-ar">الحرف اليدوية</span><span class="t-fr">Artisanat</span><span class="t-en">Craft</span><span class="t-es">Artesanía</span></button>
+      <button class="gal-filter" data-filter="hosting"><span class="t-ar">الضيافة</span><span class="t-fr">Hospitalité</span><span class="t-en">Hospitality</span><span class="t-es">Hospitalidad</span></button>
+      <button class="gal-filter" data-filter="products"><span class="t-ar">المنتجات</span><span class="t-fr">Produits</span><span class="t-en">Products</span><span class="t-es">Productos</span></button>
+      <button class="gal-filter" data-filter="nature"><span class="t-ar">الطبيعة</span><span class="t-fr">Nature</span><span class="t-en">Nature</span><span class="t-es">Naturaleza</span></button>
+      <button class="gal-filter" data-filter="visitors"><span class="t-ar">الزوار</span><span class="t-fr">Visiteurs</span><span class="t-en">Visitors</span><span class="t-es">Visitantes</span></button>
+    </div>
+
+    <div class="gal-scroll" id="galScroll">
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/1.webp" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/2.webp" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/3.webp" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/37.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/54.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/55.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/70.jpg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/71.jpg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/72.jpg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="craft"><img src="https://ouizelne.github.io/ouizelne-cooperative/91.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/66.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/75.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/76.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/77.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/78.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/86.jpg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="hosting"><img src="https://ouizelne.github.io/ouizelne-cooperative/88.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/5.webp" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/13.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/16.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/27.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/28.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/30.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/34.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/38.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/40.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/41.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/42.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/44.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/45.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/46.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/47.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/48.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/49.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/53.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/58.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/65.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="products"><img src="https://ouizelne.github.io/ouizelne-cooperative/83.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/7.webp" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/9.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/25.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/29.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/31.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/32.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/57.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="nature"><img src="https://ouizelne.github.io/ouizelne-cooperative/63.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/22.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/23.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/59.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/68.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/80.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/87.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/89.jpeg" loading="lazy" alt=""></div>
+      <div class="gal-item" data-cat="visitors"><img src="https://ouizelne.github.io/ouizelne-cooperative/90.jpeg" loading="lazy" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="testi-section section-pad">
+  <div class="wrap">
+    <span class="eyebrow"><span class="t-ar">شهادات الزوار</span><span class="t-fr">Témoignages</span><span class="t-en">Visitor testimonials</span><span class="t-es">Testimonios de visitantes</span></span>
+    <h2 class="section-title"><span class="t-ar">بطاقات بريدية من قلب الأطلس</span><span class="t-fr">Cartes postales du cœur de l'Atlas</span><span class="t-en">Postcards from the heart of the Atlas</span><span class="t-es">Postales desde el corazón del Atlas</span></h2>
+
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-photo"><img src="https://ouizelne.github.io/ouizelne-cooperative/4.webp" loading="lazy" alt=""></div>
+        <p class="testi-quote t-ar">"شعرنا وكأننا جزء من العائلة منذ اللحظة الأولى."</p>
+        <p class="testi-quote t-fr">« Nous nous sommes senties en famille dès la première minute. »</p><p class="testi-quote t-en">"We felt like family from the very first moment."</p><p class="testi-quote t-es">"Nos sentimos como en familia desde el primer momento."</p>
+        <p class="testi-name">— سلمى، مراكش / Salma, Marrakech</p>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo"><img src="https://ouizelne.github.io/ouizelne-cooperative/80.jpeg" loading="lazy" alt=""></div>
+        <p class="testi-quote t-ar">"أجمل ما رأيت هو سماء النجوم مساءً عبر التلسكوب."</p>
+        <p class="testi-quote t-fr">« Le plus beau moment : le ciel étoilé observé au télescope. »</p><p class="testi-quote t-en">"The most beautiful moment was the starry sky through the telescope."</p><p class="testi-quote t-es">"El momento más hermoso fue el cielo estrellado a través del telescopio."</p>
+        <p class="testi-name">— Julien, Lyon</p>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo"><img src="https://ouizelne.github.io/ouizelne-cooperative/88.jpeg" loading="lazy" alt=""></div>
+        <p class="testi-quote t-ar">"يوم كامل من الحواس، من رائحة الخبز إلى دفء الترحيب."</p>
+        <p class="testi-quote t-fr">« Une journée pour tous les sens, du pain chaud à l'accueil. »</p><p class="testi-quote t-en">"A full day for all the senses, from warm bread to a warm welcome."</p><p class="testi-quote t-es">"Un día completo para todos los sentidos, del pan caliente a la cálida bienvenida."</p>
+        <p class="testi-name">— Amina, Casablanca</p>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo"><img src="https://ouizelne.github.io/ouizelne-cooperative/59.jpeg" loading="lazy" alt=""></div>
+        <p class="testi-quote t-ar">"تجربة أصيلة بعيدة عن الطابع السياحي المعتاد."</p>
+        <p class="testi-quote t-fr">« Une expérience authentique, loin du tourisme habituel. »</p><p class="testi-quote t-en">"An authentic experience, far from the usual tourist trail."</p><p class="testi-quote t-es">"Una experiencia auténtica, lejos del turismo habitual."</p>
+        <p class="testi-name">— Claire, Paris</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOKING ============ -->
+<section id="booking" class="booking-section section-pad">
+  <div class="wrap">
+    <div class="booking-head reveal" style="opacity:0; transform:translateY(20px);">
+      <span class="eyebrow"><span class="t-ar">احجزي زيارتك</span><span class="t-fr">Réservation</span><span class="t-en">Booking</span><span class="t-es">Reserva</span></span>
+      <h2 class="section-title"><span class="t-ar">هيا نخطط لزيارتك</span><span class="t-fr">Planifions votre visite</span><span class="t-en">Let's plan your visit</span><span class="t-es">Planifiquemos tu visita</span></h2>
+      <p class="section-lede"><span class="t-ar">عبّئي النموذج أسفله وسنتواصل معك مباشرة عبر واتساب لتأكيد التفاصيل وموعد الزيارة.</span><span class="t-fr">Remplissez le formulaire ci-dessous et nous vous contacterons directement sur WhatsApp pour confirmer les détails et la date de votre visite.</span><span class="t-en">Fill in the form below and we'll get back to you directly on WhatsApp to confirm the details and your visit date.</span><span class="t-es">Rellena el formulario y te contactaremos directamente por WhatsApp para confirmar los detalles y la fecha de tu visita.</span></p>
+    </div>
+
+    <div class="booking-card">
+      <form class="book-form" id="bookingForm" onsubmit="return false;">
+        <div class="book-form-row">
+          <input type="text" id="bfName" placeholder="Full name">
+          <input type="tel" id="bfPhone" placeholder="Phone number">
+        </div>
+        <div class="book-form-row">
+          <input type="email" id="bfEmail" placeholder="Email">
+          <input type="date" id="bfDate">
+        </div>
+        <div class="book-form-row">
+          <input type="number" id="bfGuests" min="1" placeholder="Number of visitors">
+          <select id="bfOffer">
+            <option value="full-day">Full-day experience</option>
+            <option value="half-day">Half-day</option>
+            <option value="group">Group / private event</option>
+          </select>
+        </div>
+        <textarea id="bfNotes" rows="3" placeholder="Additional information (dietary needs, preferred language, special requests...)"></textarea>
+        <button type="submit" class="btn btn-primary magnetic" style="width:fit-content; margin-top:6px;">
+          <span class="t-ar">إرسال طلب الحجز</span><span class="t-fr">Envoyer la demande</span><span class="t-en">Send booking request</span><span class="t-es">Enviar solicitud de reserva</span>
+        </button>
+      </form>
+
+      <div class="booking-perks">
+        <div class="booking-perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+          <span class="t-ar">رد سريع عبر واتساب</span><span class="t-fr">Réponse rapide par WhatsApp</span><span class="t-en">Fast reply via WhatsApp</span><span class="t-es">Respuesta rápida por WhatsApp</span>
+        </div>
+        <div class="booking-perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+          <span class="t-ar">بدون التزام مسبق</span><span class="t-fr">Sans engagement</span><span class="t-en">No upfront commitment</span><span class="t-es">Sin compromiso previo</span>
+        </div>
+        <div class="booking-perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+          <span class="t-ar">تخصيص حسب رغبتك</span><span class="t-fr">Adapté à vos envies</span><span class="t-en">Tailored to your preferences</span><span class="t-es">Adaptado a tus preferencias</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT / FOOTER ============ -->
+<footer id="contact" class="contact-section section-pad">
+  <div class="wrap contact-inner">
+    <div>
+      <span class="eyebrow"><span class="t-ar">تواصلي معنا</span><span class="t-fr">Contactez-nous</span><span class="t-en">Contact us</span><span class="t-es">Contáctanos</span></span>
+      <h2 class="section-title"><span class="t-ar">ابقي على تواصل معنا</span><span class="t-fr">Restons en contact</span><span class="t-en">Stay in touch</span><span class="t-es">Mantente en contacto</span></h2>
+
+      <div class="contact-list">
+        <div class="contact-row">
+          <a class="ic" href="mailto:wizelncooperative@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+          <a href="mailto:wizelncooperative@gmail.com">wizelncooperative@gmail.com</a>
+        </div>
+        <div class="contact-row">
+          <a class="ic" href="tel:0619649745" aria-label="Phone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="tel:0619649745">0619 649 745</a>
+          <a class="ic whatsapp" href="https://wa.me/212619649745" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.04 3C9.37 3 3.98 8.39 3.98 15.06c0 2.34.66 4.53 1.8 6.4L3 29l7.72-2.7a12.1 12.1 0 0 0 5.32 1.23h.01c6.67 0 12.06-5.39 12.06-12.06C28.11 8.4 22.72 3 16.04 3zm0 21.9h-.01a9.86 9.86 0 0 1-5.02-1.38l-.36-.21-3.71 1.3 1.32-3.61-.24-.37a9.83 9.83 0 0 1-1.5-5.27c0-5.44 4.43-9.87 9.88-9.87a9.83 9.83 0 0 1 9.87 9.87c0 5.45-4.43 9.87-9.88 9.87zm5.4-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.87 1.21 3.07c.15.2 2.09 3.2 5.06 4.48.71.31 1.26.49 1.69.62.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg>
+          </a>
+        </div>
+        <div class="contact-row">
+          <a class="ic" href="tel:0750635972" aria-label="Phone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="tel:0750635972">0750 635 972</a>
+          <a class="ic whatsapp" href="https://wa.me/212750635972" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.04 3C9.37 3 3.98 8.39 3.98 15.06c0 2.34.66 4.53 1.8 6.4L3 29l7.72-2.7a12.1 12.1 0 0 0 5.32 1.23h.01c6.67 0 12.06-5.39 12.06-12.06C28.11 8.4 22.72 3 16.04 3zm0 21.9h-.01a9.86 9.86 0 0 1-5.02-1.38l-.36-.21-3.71 1.3 1.32-3.61-.24-.37a9.83 9.83 0 0 1-1.5-5.27c0-5.44 4.43-9.87 9.88-9.87a9.83 9.83 0 0 1 9.87 9.87c0 5.45-4.43 9.87-9.88 9.87zm5.4-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.87 1.21 3.07c.15.2 2.09 3.2 5.06 4.48.71.31 1.26.49 1.69.62.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="social-row">
+        <a href="https://www.instagram.com/cooperative_feminine_ouizelne?igsi=NG1mNjMzc2g1cW90" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37a4 4 0 1 1-7.914 1.174A4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61568487801436" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.505 17.523 2 12 2S2 6.505 2 12.06c0 5.02 3.657 9.184 8.438 9.94v-7.03H7.898v-2.91h2.54V9.845c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.877h2.773l-.443 2.91h-2.33V22c4.78-.756 8.437-4.92 8.437-9.94z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="map-frame">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3409.348165106222!2d-8.072232615145085!3d31.294120881445025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdb01f00089774a7%3A0xaeaf9e29ce282f3c!2sCoop%C3%A9rative%20F%C3%A9minine%20Ouizelne!5e0!3m2!1sar!2sma!4v1787934730863!5m2!1sar!2sma" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="map"></iframe>
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <span class="t-ar">© 2026 تعاونية ويزلن النسائية — جميع الحقوق محفوظة</span>
+    <span class="t-fr">© 2026 Coopérative Féminine Ouizelne — Tous droits réservés</span><span class="t-en">© 2026 Ouizelne Women's Cooperative — All rights reserved</span><span class="t-es">© 2026 Cooperativa Femenina Ouizelne — Todos los derechos reservados</span>
+    <span class="t-ar">صُنع بحب في جبال الأطلس</span>
+    <span class="t-fr">Fait avec amour dans les montagnes de l'Atlas</span><span class="t-en">Made with love in the Atlas Mountains</span><span class="t-es">Hecho con amor en las montañas del Atlas</span>
+  </div>
+</footer>
+
+<script>
+/* ===== BOOKING FORM -> WHATSAPP ===== */
+const WHATSAPP_NUMBER = '212750635972'; // 0750 635 972 in international format
+const bookingForm = document.getElementById('bookingForm');
+if(bookingForm){
+  bookingForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('bfName').value.trim();
+    const phone = document.getElementById('bfPhone').value.trim();
+    const email = document.getElementById('bfEmail').value.trim();
+    const date = document.getElementById('bfDate').value.trim();
+    const guests = document.getElementById('bfGuests').value.trim();
+    const offerSelect = document.getElementById('bfOffer');
+    const offerLabel = offerSelect.options[offerSelect.selectedIndex] ? offerSelect.options[offerSelect.selectedIndex].text : '';
+    const notes = document.getElementById('bfNotes').value.trim();
+
+    const formattedDate = date ? new Date(date).toLocaleDateString('ar-MA', { year:'numeric', month:'long', day:'numeric' }) : '';
+
+    const fields = [
+      { label:'الاسم الكامل', value:name },
+      { label:'رقم الهاتف', value:phone },
+      { label:'البريد الإلكتروني', value:email },
+      { label:'تاريخ الزيارة', value:formattedDate },
+      { label:'عدد الزوار', value:guests },
+      { label:'نوع العرض', value:offerLabel },
+      { label:'ملاحظات إضافية', value:notes }
+    ].filter(f => f.value);
+
+    const lines = [
+      '*طلب حجز جديد*',
+      '*تعاونية ويزلن النسائية*',
+      '━━━━━━━━━━━━━━━━━━',
+      '',
+      ...fields.map(f => `*${f.label}:*\n${f.value}`),
+      '',
+      '━━━━━━━━━━━━━━━━━━',
+      'نتشرفو نستقبلوكم قريبا في جبال الأطلس'
+    ];
+
+    const message = encodeURIComponent(lines.join('\n'));
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  });
+}
+
+/* ===== LANGUAGE SELECT ===== */
+const langBtn = document.getElementById('langToggle');
+const langMenu = document.getElementById('langMenu');
+const langCurrent = document.getElementById('langCurrent');
+const htmlEl = document.documentElement;
+
+const langMeta = {
+  en: { dir: 'ltr', label: 'EN', namePh: 'Full name', emailPh: 'Email', phonePh: 'Phone number', guestsPh: 'Number of visitors', notesPh: 'Additional information (dietary needs, preferred language, special requests...)', offers: ['Full-day experience', 'Half-day', 'Group / private event'] },
+  fr: { dir: 'ltr', label: 'FR', namePh: 'Nom complet', emailPh: 'Email', phonePh: 'Numéro de téléphone', guestsPh: 'Nombre de visiteurs', notesPh: 'Informations complémentaires (régime alimentaire, langue préférée, demandes particulières...)', offers: ['Expérience journée complète', 'Demi-journée', 'Groupe / événement privé'] },
+  ar: { dir: 'rtl', label: 'AR', namePh: 'الاسم الكامل', emailPh: 'البريد الإلكتروني', phonePh: 'رقم الهاتف', guestsPh: 'عدد الزوار', notesPh: 'معلومات إضافية (نظام غذائي خاص، اللغة المفضلة، طلبات خاصة...)', offers: ['تجربة اليوم الكامل', 'نصف يوم', 'مجموعة / فعالية خاصة'] },
+  es: { dir: 'ltr', label: 'ES', namePh: 'Nombre completo', emailPh: 'Correo electrónico', phonePh: 'Número de teléfono', guestsPh: 'Número de visitantes', notesPh: 'Información adicional (dieta especial, idioma preferido, solicitudes especiales...)', offers: ['Experiencia de día completo', 'Medio día', 'Grupo / evento privado'] }
+};
+
+function setLanguage(lang){
+  document.body.classList.remove('lang-en','lang-fr','lang-ar','lang-es');
+  document.body.classList.add('lang-' + lang);
+  htmlEl.setAttribute('lang', lang);
+  htmlEl.setAttribute('dir', langMeta[lang].dir);
+  langCurrent.textContent = langMeta[lang].label;
+  langMenu.querySelectorAll('li').forEach(li => li.classList.toggle('active', li.dataset.lang === lang));
+  const nameInput = document.getElementById('bfName');
+  const emailInput = document.getElementById('bfEmail');
+  const phoneInput = document.getElementById('bfPhone');
+  const guestsInput = document.getElementById('bfGuests');
+  const notesInput = document.getElementById('bfNotes');
+  const offerSelect = document.getElementById('bfOffer');
+  if(nameInput) nameInput.placeholder = langMeta[lang].namePh;
+  if(emailInput) emailInput.placeholder = langMeta[lang].emailPh;
+  if(phoneInput) phoneInput.placeholder = langMeta[lang].phonePh;
+  if(guestsInput) guestsInput.placeholder = langMeta[lang].guestsPh;
+  if(notesInput) notesInput.placeholder = langMeta[lang].notesPh;
+  if(offerSelect){
+    const currentValue = offerSelect.value;
+    const values = ['full-day','half-day','group'];
+    offerSelect.innerHTML = langMeta[lang].offers.map((label,i) => `<option value="${values[i]}">${label}</option>`).join('');
+    offerSelect.value = currentValue || 'full-day';
+  }
+  const wizInputEl = document.getElementById('wizInput');
+  if(wizInputEl){
+    wizInputEl.placeholder = wizInputEl.dataset['ph' + lang.charAt(0).toUpperCase() + lang.slice(1)] || wizInputEl.dataset.phEn;
+  }
+}
+
+langBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = langMenu.classList.toggle('open');
+  langBtn.setAttribute('aria-expanded', isOpen);
+});
+langMenu.querySelectorAll('li').forEach(li => {
+  li.addEventListener('click', () => {
+    setLanguage(li.dataset.lang);
+    langMenu.classList.remove('open');
+    langBtn.setAttribute('aria-expanded', 'false');
+  });
+});
+document.addEventListener('click', () => langMenu.classList.remove('open'));
+
+setLanguage('en');
+
+/* ===== DARK MODE TOGGLE ===== */
+const themeBtn = document.getElementById('themeToggle');
+const nav = document.getElementById('mainNav');
+themeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-theme');
+  nav.classList.toggle('dark-mode');
+  themeBtn.textContent = document.body.classList.contains('dark-theme') ? '☀' : '🌙';
+});
+
+/* ===== MOBILE MENU ===== */
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+/* ===== CUSTOM CURSOR ===== */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0, rx=0, ry=0;
+window.addEventListener('mousemove', e=>{
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+});
+function ringLoop(){
+  rx += (mx-rx)*0.15; ry += (my-ry)*0.15;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(ringLoop);
+}
+ringLoop();
+document.querySelectorAll('.magnetic').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>ring.classList.add('magnetic'));
+  el.addEventListener('mouseleave', ()=>ring.classList.remove('magnetic'));
+});
+
+/* ===== NAV BG ON SCROLL ===== */
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > 60){ nav.style.boxShadow = '0 10px 30px rgba(44,24,16,.08)'; }
+  else{ nav.style.boxShadow = 'none'; }
+});
+
+/* ===== TIMELINE TABS ===== */
+document.querySelectorAll('.tl-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tl-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tl-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.tl-panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+    gsap.fromTo(`.tl-panel[data-panel="${tab.dataset.tab}"]`, {opacity:0, y:20}, {opacity:1, y:0, duration:.6, ease:'power3.out'});
+  });
+});
+
+/* ===== GALLERY FILTERS ===== */
+document.querySelectorAll('.gal-filter').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.gal-filter').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.gal-item').forEach(item=>{
+      const show = f==='all' || item.dataset.cat===f;
+      item.style.display = show ? '' : 'none';
+    });
+  });
+});
+
+/* ===== PRODUCTS SCROLL BUTTONS ===== */
+const track = document.getElementById('prodTrack');
+document.getElementById('prodNext').addEventListener('click', ()=> track.scrollBy({left:280, behavior:'smooth'}));
+document.getElementById('prodPrev').addEventListener('click', ()=> track.scrollBy({left:-280, behavior:'smooth'}));
+
+/* ===== STAGGERED SLOW ZOOM ON PRODUCT IMAGES ===== */
+document.querySelectorAll('.prod-card img').forEach((img, i)=>{
+  img.style.animationDelay = (i * -1.8) + 's';
+  img.style.animationDuration = (13 + (i % 4) * 1.5) + 's';
+});
+
+/* ===== 3D TILT ON PRODUCT CARDS ===== */
+document.querySelectorAll('.prod-card-inner').forEach(card=>{
+  card.addEventListener('mousemove', e=>{
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left)/r.width - 0.5;
+    const py = (e.clientY - r.top)/r.height - 0.5;
+    card.style.transform = `rotateY(${px*14}deg) rotateX(${-py*14}deg) scale(1.03)`;
+  });
+  card.addEventListener('mouseleave', ()=> card.style.transform = 'rotateY(0) rotateX(0) scale(1)');
+});
+
+/* ===== GSAP SCROLLTRIGGER REVEALS ===== */
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el, {
+    opacity:1, y:0, duration:1, ease:'power3.out',
+    scrollTrigger:{ trigger:el, start:'top 85%' }
+  });
+});
+
+gsap.utils.toArray('section').forEach(sec=>{
+  const items = sec.querySelectorAll('.bento-card, .meal-card, .testi-card, .gal-item, .prod-card');
+  if(items.length){
+    gsap.from(items, {
+      opacity:0, y:40, duration:.8, stagger:.08, ease:'power3.out',
+      scrollTrigger:{ trigger:sec, start:'top 80%' }
+    });
+  }
+});
+
+gsap.utils.toArray('.tl-nav, .stat, .about-badge').forEach(el=>{
+  gsap.from(el, { opacity:0, y:24, duration:.8, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 88%'} });
+});
+
+/* Hero entrance */
+gsap.timeline()
+  .from('.hero-eyebrow', {opacity:0, y:20, duration:.8, delay:.2})
+  .from('.hero-title', {opacity:0, y:40, duration:1}, '-=.5')
+  .from('.hero-sub', {opacity:0, y:20, duration:.8}, '-=.6')
+  .from('.hero-cta', {opacity:0, y:20, duration:.8}, '-=.6')
+  .from('.hero-counters div', {opacity:0, y:20, stagger:.15, duration:.6}, '-=.5');
+
+/* Section title parallax-ish reveal */
+gsap.utils.toArray('.section-title').forEach(t=>{
+  gsap.from(t, { opacity:0, y:30, duration:1, ease:'power3.out', scrollTrigger:{trigger:t, start:'top 88%'} });
+});
+
+/* ===== WIZELNE CHAT WIDGET ===== */
+document.addEventListener('DOMContentLoaded', function(){
+const WIZ_ENDPOINT = 'https://polished-shape-e526.sonesiteweb.workers.dev/';
+let wizHistory = [];
+let wizConversationId = null;
+try { wizConversationId = localStorage.getItem('wizConversationId') || null; } catch(e) {}
+let wizGreeted = false;
+
+const wizLauncher = document.getElementById('wizLauncher');
+const wizPanel = document.getElementById('wizPanel');
+const wizBody = document.getElementById('wizBody');
+const wizForm = document.getElementById('wizForm');
+const wizInput = document.getElementById('wizInput');
+
+function wizCurrentLang(){
+  if(document.body.classList.contains('lang-ar')) return 'ar';
+  if(document.body.classList.contains('lang-fr')) return 'fr';
+  if(document.body.classList.contains('lang-es')) return 'es';
+  return 'en';
+}
+
+function wizText(dict){ return dict[wizCurrentLang()]; }
+
+function wizGreetingText(){
+  return wizText({
+    ar: 'مرحباً بك في تعاونية ويزلن النسائية. كيفاش نقدر نعاونك اليوم؟',
+    fr: "Bienvenue à la Coopérative Féminine Ouizelne. Comment puis-je vous aider aujourd'hui ?",
+    en: 'Welcome to the Ouizelne Women\'s Cooperative. How can I help you today?',
+    es: 'Bienvenido a la Cooperativa Femenina Ouizelne. ¿Cómo puedo ayudarte hoy?'
+  });
+}
+
+function wizErrorText(){
+  return wizText({
+    ar: 'تعذر الاتصال بالمساعد حالياً. تواصلي معنا مباشرة عبر واتساب.',
+    fr: "Impossible de contacter l'assistant pour le moment. Contactez-nous directement sur WhatsApp.",
+    en: 'Could not reach the assistant right now. Please contact us directly on WhatsApp.',
+    es: 'No se pudo contactar al asistente en este momento. Contáctanos directamente por WhatsApp.'
+  });
+}
+
+function wizAddMessage(text, sender){
+  const div = document.createElement('div');
+  div.className = 'wiz-msg ' + sender;
+  div.textContent = text;
+  wizBody.appendChild(div);
+  wizBody.scrollTop = wizBody.scrollHeight;
+}
+
+function wizShowTyping(){
+  const t = document.createElement('div');
+  t.className = 'wiz-typing';
+  t.id = 'wizTypingIndicator';
+  t.innerHTML = '<span></span><span></span><span></span>';
+  wizBody.appendChild(t);
+  wizBody.scrollTop = wizBody.scrollHeight;
+}
+function wizHideTyping(){
+  const t = document.getElementById('wizTypingIndicator');
+  if(t) t.remove();
+}
+
+async function wizSendMessage(text){
+  wizAddMessage(text, 'user');
+  wizHistory.push({ role:'user', content:text });
+  wizShowTyping();
+  try{
+    const res = await fetch(WIZ_ENDPOINT, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ message:text, lang:wizCurrentLang(), messages:wizHistory, conversationId:wizConversationId })
+    });
+    const data = await res.json().catch(()=>null);
+    let reply = null;
+    if(data){
+      if(typeof data === 'string') reply = data;
+      else reply = data.reply || data.response || data.message || data.content ||
+        (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || null;
+    }
+    if(!reply) reply = wizErrorText();
+    if(data && data.conversationId){
+      wizConversationId = data.conversationId;
+      try { localStorage.setItem('wizConversationId', wizConversationId); } catch(e) {}
+    }
+    wizHideTyping();
+    wizAddMessage(reply, 'bot');
+    wizHistory.push({ role:'assistant', content:reply });
+  }catch(err){
+    wizHideTyping();
+    wizAddMessage(wizErrorText(), 'bot');
+  }
+}
+
+if(wizLauncher && wizPanel && wizForm && wizInput){
+  wizLauncher.addEventListener('click', ()=>{
+    const isOpen = wizPanel.classList.toggle('open');
+    wizLauncher.classList.toggle('open', isOpen);
+    if(isOpen){
+      if(!wizGreeted){
+        wizGreeted = true;
+        wizAddMessage(wizGreetingText(), 'bot');
+      }
+      wizInput.focus();
+    }
+  });
+
+  wizForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const text = wizInput.value.trim();
+    if(!text) return;
+    wizInput.value = '';
+    wizSendMessage(text);
+  });
+}
+
+}); // end DOMContentLoaded (Wizelne chat widget)
+</script>
+
+<!-- ============ WIZELNE CHAT WIDGET ============ -->
+<button class="wiz-launcher" id="wizLauncher" aria-label="Wizelne assistant">
+  <img src="https://ouizelne.github.io/ouizelne-cooperative/logo.jpeg" alt="ويزلن">
+  <svg class="wiz-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <span class="wiz-dot"></span>
+</button>
+
+<div class="wiz-panel" id="wizPanel">
+  <div class="wiz-head">
+    <img src="https://ouizelne.github.io/ouizelne-cooperative/logo.jpeg" alt="ويزلن">
+    <div>
+      <div class="wiz-title">
+        <span class="t-ar">مساعد ويزلن</span><span class="t-fr">Assistant Ouizelne</span><span class="t-en">Ouizelne Assistant</span><span class="t-es">Asistente Ouizelne</span>
+      </div>
+      <div class="wiz-status">
+        <span class="t-ar">متصل الآن</span><span class="t-fr">En ligne</span><span class="t-en">Online</span><span class="t-es">En línea</span>
+      </div>
+    </div>
+  </div>
+  <div class="wiz-body" id="wizBody"></div>
+  <form class="wiz-foot" id="wizForm">
+    <input type="text" id="wizInput" autocomplete="off"
+      data-ph-ar="اكتبي رسالتك هنا..." data-ph-fr="Écrivez votre message..." data-ph-en="Type your message..." data-ph-es="Escribe tu mensaje...">
+    <button type="submit" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </form>
+</div>
+
+</body></html>
